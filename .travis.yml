@@ -1,0 +1,22 @@
+sudo: required
+language: generic
+services:
+  - docker
+
+before_install:
+  - docker build -t zlouity/docker-react -f dockerfile.dev .
+
+script:
+  - docker run -e CI=true zlouity/docker-react npm run test 
+
+deploy:
+  provider: elasticbeanstalk
+  region: "us--1"
+  app: "docker-react"
+  env: "DockerReact-env"
+  bucket_name: "elasticbeanstalk-us-east-1-779889393061"
+  bucket_path: "docker-react"
+  on:
+    branch: master
+
+
